@@ -3,6 +3,7 @@ const app = express();
 import connectDB from "./db/connect.js";
 import dotenv from "dotenv";
 dotenv.config();
+import cors from "cors";
 import "express-async-errors";
 
 import helmet from "helmet";
@@ -13,6 +14,7 @@ import mongoSanitize from "express-mongo-sanitize";
 import notFoundMiddleware from "./middleware/not-found.js";
 import errorHandlerMiddleware from "./middleware/error-handler.js";
 
+app.use(cors());
 app.use(express.json());
 app.use(fileUpload({ useTempFiles: true }));
 app.use(helmet());
@@ -32,6 +34,10 @@ import fileUpload from "express-fileupload";
 import authRoutes from "./routes/authRouter.js";
 import postRoutes from "./routes/postRouter.js";
 
+app.get("/", (req, res) => {
+  res.setHeader("Acess-Control-Allow-Credentials", "true");
+  res.send("API is running");
+});
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/posts", postRoutes);
 
